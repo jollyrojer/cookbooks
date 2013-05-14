@@ -54,11 +54,19 @@ end
 execute "wp-cli_download_wordpress" do
   cwd node['wordpress']['path']
   command "~/.composer/bin/wp core download"
-  creates node['wordpress']['path'] + "wp-settings.php"
+  creates ::File.join(node['wordpress']['path'], "wp-settings.php")
+  action :run
 end
 
 execute "wp-cli_configure_db" do
   command "~/.composer/bin/wp core config --dbname=#{node["wordpress"]["database"]} --dbuser=#{node["wordpress"]["db_username"]} dbpass=#{node['wordpress']['db_password']} --dbhost=#{node["wordpress"]["db_host"]}"
+  creates ::File.join(node['wordpress']['path'], "wp-config.php")
+  action :run
+end
+
+execute "wp-cli_configure_wordpress" do
+  cwd node['wordpress']['path']
+  command "~/.composer/bin/wp core install --url=#{node["wordpress"]["server_name"]} --title=#{node["wordpress"]["wp_title"]} --admin_name=#{node["wordpress"]["wp_admin"]} --admin_email=#{node["wordpress"]["wp_admin_email"]} --admin_password=#{node["wordpress"]["wp_admin_password"]}"
   action :run
 end
 
