@@ -57,6 +57,11 @@ execute "wp-cli_download_wordpress" do
   creates node['wordpress']['path'] + "wp-settings.php"
 end
 
+execute "wp-cli_configure_db" do
+  command "~/.composer/bin/wp core config --dbname=#{node["wordpress"]["database"]} --dbuser=#{node["wordpress"]["db_username"]} dbpass=#{node['wordpress']['db_password']} --dbhost=#{node["wordpress"]["db_host"]}"
+  action :run
+end
+
 #wordpress_latest = Chef::Config[:file_cache_path] + "/wordpress-latest.tar.gz"
 #remote_file wordpress_latest do
 #  source "http://wordpress.org/latest.tar.gz"
