@@ -5,5 +5,6 @@
 ###
 .chef/*.pem
 .chef/encrypted_data_bag_secret
+cookbooks/wordpress/recipes/.default.rb.swp
 solo.rb
 solo.json

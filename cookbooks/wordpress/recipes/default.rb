@@ -59,6 +59,7 @@ execute "wp-cli_download_wordpress" do
 end
 
 execute "wp-cli_configure_db" do
+  cwd node['wordpress']['path']
   command "~/.composer/bin/wp core config --dbname=#{node["wordpress"]["database"]} --dbuser=#{node["wordpress"]["db_username"]} dbpass=#{node['wordpress']['db_password']} --dbhost=#{node["wordpress"]["db_host"]}"
   creates ::File.join(node['wordpress']['path'], "wp-config.php")
   action :run
