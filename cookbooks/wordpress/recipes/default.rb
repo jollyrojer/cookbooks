@@ -64,10 +64,22 @@ execute "wp-cli_configure_db" do
   action :run
 end
 
+
 execute "wp-cli_configure_wordpress" do
-  cwd node['wordpress']['path']
-  command "~/.composer/bin/wp core install --url=#{node["wordpress"]["server_name"]} --title=#{node["wordpress"]["wp_title"]} --admin_name=#{node["wordpress"]["wp_admin"]} --admin_email=#{node["wordpress"]["wp_admin_email"]} --admin_password=#{node["wordpress"]["wp_admin_password"]}"
+    cwd node['wordpress']['path']
+    command "~/.composer/bin/wp core install --url=#{node["wordpress"]["server_name"]} --title=#{node["wordpress"]["wp_title"]} --admin_name=#{node["wordpress"]["wp_admin"]} --admin_email=#{node["wordpress"]["wp_admin_email"]} --admin_password=#{node["wordpress"]["wp_admin_password"]}"
+    not_if do "~/.composer/bin/wp core is-installed" end
+    action :run
+end
+
+wp_theme_name = ::File.basename(node["wordpress"]["theme"]).split(".")[0]
+if ( !node["wordpress"]["theme"].nil? )
+  execute "wp-cli_theme_install" do
+    cwd node['wordpress']['path']
+    command "sudo ~/.composer/bin/wp theme install #{node["wordpress"]["theme"]} --activate"
+    creates ::File.join(node['wordpress']['path'], wp_theme_name )
   action :run
+  end
 end
 
 #wordpress_latest = Chef::Config[:file_cache_path] + "/wordpress-latest.tar.gz"
