@@ -83,8 +83,8 @@ if ( !node["wordpress"]["theme"].nil? )
   end
 end
 
-web_app 'phpapp' do
+web_app 'wordpress' do
   template 'site.conf.erb'
-  docroot node['phpapp']['path']
-  server_name node['phpapp']['server_name']
+  docroot node['wordpress']['path']
+  server_name node['wordpress']['server_name']
 end
