@@ -76,7 +76,7 @@ wp_theme_name = ::File.basename(node["wordpress"]["theme"]).split(".")[0]
 if ( !node["wordpress"]["theme"].nil? )
   execute "wp-cli_theme_install" do
     cwd node['wordpress']['path']
-    command "sudo ~/.composer/bin/wp theme install #{node["wordpress"]["theme"]} --activate"
+    command "~/.composer/bin/wp theme install #{node["wordpress"]["theme"]} --activate"
     creates ::File.join(node['wordpress']['path'], wp_theme_name )
   action :run
   end
