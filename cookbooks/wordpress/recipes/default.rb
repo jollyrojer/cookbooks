@@ -69,7 +69,7 @@ end
 execute "wp-cli_configure_wordpress" do
     cwd node['wordpress']['path']
     command "~/.composer/bin/wp core install --url=#{node["wordpress"]["server_name"]} --title=#{node["wordpress"]["wp_title"]} --admin_name=#{node["wordpress"]["wp_admin"]} --admin_email=#{node["wordpress"]["wp_admin_email"]} --admin_password=#{node["wordpress"]["wp_admin_password"]}"
-    not_if do "~/.composer/bin/wp core is-installed" end
+    not_if "~/.composer/bin/wp core is-installed"
     action :run
 end
 
