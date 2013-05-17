@@ -14,7 +14,7 @@ include_recipe "php::module_mysql"
 include_recipe "apache2::mod_php5"
 include_recipe "mysql::ruby"
 
-["unzip", "wget", "curl" ].each do |pkg|
+["unzip", "wget", "curl", "git-core" ].each do |pkg|
   package pkg do
     action :install
   end
@@ -37,9 +37,16 @@ mysql_database_user node['wordpress']['db_username'] do
   action :grant
 end
 
+wp_cli_installer = Chef::Config[:file_cache_path] + "/installer.sh"
+remote_file wp_cli_installer do
+  source "http://wp-cli.org/installer.sh"
+  mode "0644"
+  action :create_if_missing
+end
+
 execute "wp-cli_install" do
-  command "curl http://wp-cli.org/installer.sh | bash"
-  creates "~/.composer/bin/wp"
+  command "bash #{wp_cli_installer}"
+  creates ::File.join(ENV['HOME'], ".composer/bin/wp")
   action :run
 end
 
@@ -67,10 +74,10 @@ end
 
 
 execute "wp-cli_configure_wordpress" do
-    cwd node['wordpress']['path']
-    command "~/.composer/bin/wp core install --url=#{node["wordpress"]["server_name"]} --title=#{node["wordpress"]["wp_title"]} --admin_name=#{node["wordpress"]["wp_admin"]} --admin_email=#{node["wordpress"]["wp_admin_email"]} --admin_password=#{node["wordpress"]["wp_admin_password"]}"
-    not_if "~/.composer/bin/wp core is-installed"
-    action :run
+  cwd node['wordpress']['path']
+  command "~/.composer/bin/wp core install --url=#{node["wordpress"]["server_name"]} --title=#{node["wordpress"]["wp_title"]} --admin_name=#{node["wordpress"]["wp_admin"]} --admin_email=#{node["wordpress"]["wp_admin_email"]} --admin_password=#{node["wordpress"]["wp_admin_password"]}"
+  not_if "~/.composer/bin/wp core is-installed"
+  action :run
 end
 
 if ( !node["wordpress"]["theme"].nil? )
