@@ -10,7 +10,6 @@ default["wordpress"]["wp_title"] = "wordpress"
 default["wordpress"]["wp_admin"] = "admin"
 default["wordpress"]["wp_admin_email"] = "admin@somewhere.org"
 default["wordpress"]["wp_admin_password"] = "ic7Wezael6janaephi"
-default["wordpress"]["theme"] = nil
 
 # Set default hostname to cloud public DNS if exists
 
@@ -24,3 +23,6 @@ if ( node['wordpress']['server_name'].empty? )
   set['wordpress']['server_name']=nil
 end
 
+if ( node['wordpress']['theme'].empty? )
+  set['wordpress']['theme']=nil
+end
