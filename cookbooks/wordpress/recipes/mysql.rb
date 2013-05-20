@@ -7,6 +7,7 @@
 ## All rights reserved - Do Not Redistribute
 ##
 include_recipe "mysql::client"
+include_recipe "mysql::ruby"
 
 mysql_database node['wordpress']['database'] do
   connection ({:host => 'localhost', :username => 'root', :password => node['mysql']['server_root_password']})
