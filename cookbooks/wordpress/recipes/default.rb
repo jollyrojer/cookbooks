@@ -80,7 +80,7 @@ execute "wp-cli_configure_wordpress" do
   action :run
 end
 
-if ( !node["wordpress"]["theme"].nil? )
+if ( !node["wordpress"]["theme"].empty? )
   wp_theme_name = ::File.basename(node["wordpress"]["theme"]).split(".")[0]
   execute "wp-cli_theme_install" do
     cwd node['wordpress']['path']
