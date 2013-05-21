@@ -16,6 +16,7 @@ end
 
 mysql_database_user node['wordpress']['db_username'] do
   connection ({:host => 'localhost', :username => 'root', :password => node['mysql']['server_root_password']})
+  host node['wordpress']['app_host']
   password node['wordpress']['db_password']
   database_name node['wordpress']['database']
   privileges [:select,:update,:insert,:create,:delete]

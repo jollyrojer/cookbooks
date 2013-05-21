@@ -1,6 +1,7 @@
 default["mysql"]["server_root_password"] = "chaefa6iGh7oux8dei3f"
 default["mysql"]["server_debian_password"] = "Thie4Xae2zoh7caich5u"
 default["mysql"]["server_repl_password"] = "mieroo8Fie2loo7cai6y"
+default["wordpress"]["app_host"] = "127.0.0.1"
 default["wordpress"]["db_host"] = "localhost"
 default["wordpress"]["database"] = "wordpressdb"
 default["wordpress"]["db_username"] = "wpuser"
